@@ -4,6 +4,7 @@ export class RecognitionEffect {
   running = false;
 
   onFinal?: (str: string) => void;
+  onError?: () => void;
 
   constructor() {
     this.recognition.continuous = true;
@@ -19,6 +20,13 @@ export class RecognitionEffect {
         }
       }
     };
+
+    this.recognition.onerror = (event) => {
+      console.warn(event);
+      if (this.onError) this.onError();
+    };
+
+    this.start();
   }
 
   start() {

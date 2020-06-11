@@ -3,11 +3,8 @@ import { useState } from "react";
 import { FunctionComponent } from "react";
 import { css } from "@emotion/core";
 import { globalColors } from "../../shared/global-style";
-import { ClientBrowser, VideoType } from "../utils/types";
-import StreamController from "./stream-controller";
-import Video from "./video";
+import { ClientBrowser } from "../utils/types";
 import { IconButton } from "./icon";
-import StreamInfo from "./stream-info";
 import VADetector from "./va-detector";
 
 interface Props {
@@ -16,19 +13,29 @@ interface Props {
   browser: ClientBrowser;
   isAudioTrackMuted: boolean;
   onClickToggleAudioMuted: () => void;
+  onClickDownload: () => void;
 }
 const RecognitionLayout: FunctionComponent<Props> = ({
   stream,
-  browser,
   isAudioTrackMuted,
   onClickToggleAudioMuted,
+  onClickDownload,
 }: Props) => {
   const [isMinimize, setMinimize] = useState(false);
 
   return (
     <div css={isMinimize ? [wrapperStyle, minimizeStyle] : wrapperStyle}>
       <div css={videoStyle}>
+        <div style={{ color: "white", padding: 5, position: "absolute" }}>
+          speech recognition
+        </div>
         <div css={actionStyle}>
+          <IconButton
+            name="cloud_download"
+            showEdge={true}
+            title="download"
+            onClick={onClickDownload}
+          />
           {isMinimize ? (
             <IconButton
               name="keyboard_arrow_right"
@@ -45,21 +52,19 @@ const RecognitionLayout: FunctionComponent<Props> = ({
             />
           )}
         </div>
+        <div style={{ position: "relative", width: "100%", height: "100%" }}>
+          <button
+            onClick={onClickToggleAudioMuted}
+            title={isAudioTrackMuted ? "Unmute audio" : "Mute audio"}
+            css={buttonStyle}
+          >
+            <i className="material-icons" css={{ fontsize: "xxx-large" }}>
+              {isAudioTrackMuted ? "mic_off" : "mic"}
+            </i>
+          </button>
+        </div>
         <div css={controllerStyle}>
           <VADetector stream={stream} />
-          <StreamController
-            displayName={"recognition"}
-            browser={browser}
-            controllers={
-              <>
-                <IconButton
-                  name={isAudioTrackMuted ? "mic_off" : "mic"}
-                  title={isAudioTrackMuted ? "Unmute audio" : "Mute audio"}
-                  onClick={onClickToggleAudioMuted}
-                />
-              </>
-            }
-          />
         </div>
       </div>
     </div>
@@ -102,4 +107,21 @@ const actionStyle = css({
   display: "flex",
   alignItems: "center",
   color: globalColors.white,
+});
+
+const buttonStyle = css({
+  padding: "0 1px",
+  appearance: "none",
+  border: "none",
+  background: "none",
+  color: "white",
+  cursor: "pointer",
+  position: "absolute",
+  top: 0,
+  right: 0,
+  bottom: 0,
+  left: 0,
+  margin: "auto",
+  width: 70,
+  height: 70,
 });

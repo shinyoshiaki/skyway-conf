@@ -2,12 +2,6 @@ import React, { useContext, useCallback, useEffect, useRef } from "react";
 import { FunctionComponent } from "react";
 import { Observer } from "mobx-react";
 import { StoreContext } from "../contexts";
-import {
-  openSettings,
-  castVideo,
-  toggleAudioMuted,
-  toggleVideoMuted,
-} from "../effects/local-stream";
 import RecognitionLayout from "../components/recognition-layout";
 import { RecognitionEffect } from "../effects/recognition";
 
@@ -15,14 +9,21 @@ const Recognition: FunctionComponent<{}> = () => {
   const store = useContext(StoreContext);
   const recognitionRef = useRef<RecognitionEffect>();
 
-  const onClickCastVideo = useCallback(castVideo(store), [store]);
-  const onClickOpenSettings = useCallback(openSettings(store), [store]);
   const onClickToggleAudioMuted = useCallback(() => {
     const recognition = recognitionRef.current!;
     recognition.toggle();
     store.subtitle.toggleMuted("audio");
   }, [store]);
-  const onClickToggleVideoMuted = useCallback(toggleVideoMuted(store), [store]);
+
+  const onClickDownload = useCallback(() => {
+    const content = JSON.stringify([...store.room.subtitles]);
+    const blob = new Blob([content], { type: "text/plain" });
+    const url = window.URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.download = name;
+    anchor.href = url;
+    anchor.click();
+  }, [store]);
 
   useEffect(() => {
     const recognition = (recognitionRef.current = new RecognitionEffect());
@@ -31,6 +32,10 @@ const Recognition: FunctionComponent<{}> = () => {
         from: store.client.displayName,
         text: str,
       });
+    };
+    recognition.onError = () => {
+      console.log("error");
+      store.subtitle.toggleMuted("audio");
     };
   }, [store]);
 
@@ -49,6 +54,7 @@ const Recognition: FunctionComponent<{}> = () => {
             browser={client.browser}
             isAudioTrackMuted={subtitle.isAudioTrackMuted}
             onClickToggleAudioMuted={onClickToggleAudioMuted}
+            onClickDownload={onClickDownload}
           />
         );
       }}
