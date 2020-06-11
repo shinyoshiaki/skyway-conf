@@ -20,7 +20,8 @@ const Recognition: FunctionComponent<{}> = () => {
   const onClickToggleAudioMuted = useCallback(() => {
     const recognition = recognitionRef.current!;
     recognition.toggle();
-  }, []);
+    store.subtitle.toggleMuted("audio");
+  }, [store]);
   const onClickToggleVideoMuted = useCallback(toggleVideoMuted(store), [store]);
 
   useEffect(() => {
@@ -30,7 +31,7 @@ const Recognition: FunctionComponent<{}> = () => {
     };
   }, [store]);
 
-  const { media, client, ui } = store;
+  const { media, client, ui, subtitle } = store;
   return (
     <Observer>
       {() => {
@@ -43,7 +44,7 @@ const Recognition: FunctionComponent<{}> = () => {
             stream={media.stream}
             displayName={client.displayName}
             browser={client.browser}
-            isAudioTrackMuted={media.isAudioTrackMuted}
+            isAudioTrackMuted={subtitle.isAudioTrackMuted}
             onClickToggleAudioMuted={onClickToggleAudioMuted}
           />
         );

@@ -3,6 +3,7 @@ import ClientStore from "./client";
 import MediaStore from "./media";
 import RoomStore from "./room";
 import NotificationStore from "./notification";
+import SubtitleStore from "./subtitle";
 
 class RootStore {
   ui: UiStore;
@@ -10,6 +11,7 @@ class RootStore {
   media: MediaStore;
   room: RoomStore;
   notification: NotificationStore;
+  subtitle: SubtitleStore;
 
   constructor() {
     this.ui = new UiStore();
@@ -17,6 +19,7 @@ class RootStore {
     this.media = new MediaStore();
     this.room = new RoomStore();
     this.notification = new NotificationStore();
+    this.subtitle = new SubtitleStore();
   }
 }
 
