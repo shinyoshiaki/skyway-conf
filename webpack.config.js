@@ -6,7 +6,7 @@ const rootPath = path.resolve(".");
 
 const config = {
   mode: "development",
-  devtool: false,
+  devtool: "source-map",
   context: rootPath,
   entry: {
     index: "./src/index/main.tsx",
