@@ -22,6 +22,7 @@ class RoomStore {
   chats: IObservableArray<RoomChat>;
   subtitles: IObservableArray<RoomSubtitle>;
   myLastChat: RoomChat | null;
+  myLastSubtitle: RoomSubtitle | null;
   myLastReaction: RoomReaction | null;
   pinnedId: string | null;
   castRequestCount: number;
@@ -45,6 +46,7 @@ class RoomStore {
     // @ts-ignore: to type IObservableArray
     this.subtitles = [];
     this.myLastChat = null;
+    this.myLastSubtitle = null;
     this.myLastReaction = null;
     this.pinnedId = null;
     this.castRequestCount = 0;
@@ -92,7 +94,12 @@ class RoomStore {
     this.chats.push(chat);
   }
 
-  addSubtitle(subtitle: RoomSubtitle) {
+  addLocalSubtitle(subtitle: RoomSubtitle) {
+    this.subtitles.push(subtitle);
+    this.myLastSubtitle = subtitle;
+  }
+
+  addRemoteSubtitle(subtitle: RoomSubtitle) {
     this.subtitles.push(subtitle);
   }
 
@@ -146,6 +153,7 @@ decorate(RoomStore, {
   chats: observable.shallow,
   subtitles: observable.shallow,
   myLastChat: observable.ref,
+  myLastSubtitle: observable.ref,
   myLastReaction: observable.ref,
   pinnedId: observable,
   castRequestCount: observable,
@@ -156,6 +164,8 @@ decorate(RoomStore, {
   load: action,
   addLocalChat: action,
   addRemoteChat: action,
+  addLocalSubtitle: action,
+  addRemoteSubtitle: action,
   removeStream: action,
   getPeerConnection: action,
   cleanUp: action,

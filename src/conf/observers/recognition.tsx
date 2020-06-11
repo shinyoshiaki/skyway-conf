@@ -27,7 +27,10 @@ const Recognition: FunctionComponent<{}> = () => {
   useEffect(() => {
     const recognition = (recognitionRef.current = new RecognitionEffect());
     recognition.onFinal = (str) => {
-      store.room.addSubtitle({ from: store.client.displayName, text: str });
+      store.room.addLocalSubtitle({
+        from: store.client.displayName,
+        text: str,
+      });
     };
   }, [store]);
 

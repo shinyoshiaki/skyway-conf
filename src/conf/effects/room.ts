@@ -71,6 +71,16 @@ export const joinRoom = (store: RootStore) => {
       }
     ),
     reaction(
+      () => room.myLastSubtitle,
+      (subtitle) => {
+        if (subtitle === null) {
+          return;
+        }
+        log("reaction:send(subtitle)");
+        confRoom.send({ type: "subtitle", payload: subtitle });
+      }
+    ),
+    reaction(
       () => room.myLastReaction,
       (reaction) => {
         if (reaction === null) {
@@ -161,7 +171,7 @@ export const joinRoom = (store: RootStore) => {
       }
       case "subtitle": {
         const data = payload as RoomSubtitle;
-        room.addSubtitle(data);
+        room.addRemoteSubtitle(data);
         break;
       }
       case "reaction": {
