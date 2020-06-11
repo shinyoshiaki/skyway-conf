@@ -6,7 +6,7 @@ export const SubtitleLayout: FC<{ subtitles: RoomSubtitle[] }> = ({
 }) => {
   return (
     <div style={{ width: 500 }}>
-      {subtitles.slice(-5).map((subtitle, i) => (
+      {subtitles.slice(-10).map((subtitle, i) => (
         <div key={i}>{`(${subtitle.from}) ${subtitle.text}`}</div>
       ))}
     </div>
