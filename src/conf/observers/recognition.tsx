@@ -1,4 +1,10 @@
-import React, { useContext, useCallback, useEffect, useRef } from "react";
+import React, {
+  useContext,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { FunctionComponent } from "react";
 import { Observer } from "mobx-react";
 import { StoreContext } from "../contexts";
@@ -8,6 +14,7 @@ import { RecognitionEffect } from "../effects/recognition";
 const Recognition: FunctionComponent<{}> = () => {
   const store = useContext(StoreContext);
   const recognitionRef = useRef<RecognitionEffect>();
+  const [progress, setProgress] = useState("");
 
   const onClickToggleAudioMuted = useCallback(() => {
     const recognition = recognitionRef.current!;
@@ -40,6 +47,7 @@ const Recognition: FunctionComponent<{}> = () => {
       console.log("error");
       store.subtitle.toggleMuted();
     };
+    recognition.onProgress = setProgress;
   }, [store]);
 
   const { media, client, ui, subtitle } = store;
@@ -58,6 +66,7 @@ const Recognition: FunctionComponent<{}> = () => {
             isAudioTrackMuted={subtitle.isAudioTrackMuted}
             onClickToggleAudioMuted={onClickToggleAudioMuted}
             onClickDownload={onClickDownload}
+            progress={progress}
           />
         );
       }}

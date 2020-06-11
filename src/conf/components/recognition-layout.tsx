@@ -14,12 +14,14 @@ interface Props {
   isAudioTrackMuted: boolean;
   onClickToggleAudioMuted: () => void;
   onClickDownload: () => void;
+  progress: string;
 }
 const RecognitionLayout: FunctionComponent<Props> = ({
   stream,
   isAudioTrackMuted,
   onClickToggleAudioMuted,
   onClickDownload,
+  progress,
 }: Props) => {
   const [isMinimize, setMinimize] = useState(false);
 
@@ -65,6 +67,7 @@ const RecognitionLayout: FunctionComponent<Props> = ({
         </div>
         <div css={controllerStyle}>
           <VADetector stream={stream} />
+          <div style={{ color: "white" }}>{progress}</div>
         </div>
       </div>
     </div>
@@ -97,6 +100,7 @@ const controllerStyle = css({
   right: 0,
   bottom: 0,
   zIndex: 1,
+  padding: 5,
 });
 
 const actionStyle = css({

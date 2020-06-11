@@ -4,14 +4,21 @@ export class RecognitionEffect {
   running = false;
 
   onFinal?: (str: string) => void;
+  onProgress?: (str: string) => void;
   onError?: () => void;
 
   constructor() {
     this.recognition.continuous = true;
+    this.recognition.interimResults = true;
 
     this.recognition.onresult = (event) => {
       for (let i = event.resultIndex; i < event.results.length; ++i) {
-        if (this.onFinal) this.onFinal(event.results[i][0].transcript);
+        if (event.results[i].isFinal) {
+          if (this.onFinal) this.onFinal(event.results[i][0].transcript);
+        } else {
+          // eslint-disable-next-line no-lonely-if
+          if (this.onProgress) this.onProgress(event.results[i][0].transcript);
+        }
       }
     };
 
