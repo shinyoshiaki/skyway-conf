@@ -43,7 +43,7 @@ export const SubtitleLayout: FC<{ subtitles: RoomSubtitle[] }> = ({
         {[...subtitles].slice(-10).map((subtitle, i) => (
           <div
             key={i}
-            style={{ color: "white" }}
+            style={{ color: "white", fontWeight: 500 }}
           >{`(${subtitle.from}) ${subtitle.text}`}</div>
         ))}
       </div>
