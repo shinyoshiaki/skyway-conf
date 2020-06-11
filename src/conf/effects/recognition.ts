@@ -8,16 +8,10 @@ export class RecognitionEffect {
 
   constructor() {
     this.recognition.continuous = true;
-    this.recognition.interimResults = true;
 
     this.recognition.onresult = (event) => {
       for (let i = event.resultIndex; i < event.results.length; ++i) {
-        if (event.results[i].isFinal) {
-          console.log("final", event.results[i][0].transcript);
-          if (this.onFinal) this.onFinal(event.results[i][0].transcript);
-        } else {
-          console.log(event.results[i][0].transcript);
-        }
+        if (this.onFinal) this.onFinal(event.results[i][0].transcript);
       }
     };
 

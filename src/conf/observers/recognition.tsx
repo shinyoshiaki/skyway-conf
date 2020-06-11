@@ -12,7 +12,7 @@ const Recognition: FunctionComponent<{}> = () => {
   const onClickToggleAudioMuted = useCallback(() => {
     const recognition = recognitionRef.current!;
     recognition.toggle();
-    store.subtitle.toggleMuted("audio");
+    store.subtitle.toggleMuted();
   }, [store]);
 
   const onClickDownload = useCallback(() => {
@@ -38,7 +38,7 @@ const Recognition: FunctionComponent<{}> = () => {
     };
     recognition.onError = () => {
       console.log("error");
-      store.subtitle.toggleMuted("audio");
+      store.subtitle.toggleMuted();
     };
   }, [store]);
 
