@@ -1,7 +1,13 @@
 import { decorate, observable, computed, action } from "mobx";
 import { IObservableArray } from "mobx";
 import Peer, { RoomStream, SfuRoom, MeshRoom } from "skyway-js";
-import { RoomInit, RoomStat, RoomChat, RoomReaction } from "../utils/types";
+import {
+  RoomInit,
+  RoomStat,
+  RoomChat,
+  RoomReaction,
+  RoomSubtitle,
+} from "../utils/types";
 import { getPeerConnectionFromSfuRoom } from "../utils/skyway";
 
 class RoomStore {
@@ -14,6 +20,7 @@ class RoomStore {
   streams: Map<string, RoomStream>;
   stats: Map<string, RoomStat>;
   chats: IObservableArray<RoomChat>;
+  subtitles: IObservableArray<RoomSubtitle>;
   myLastChat: RoomChat | null;
   myLastReaction: RoomReaction | null;
   pinnedId: string | null;
@@ -35,6 +42,8 @@ class RoomStore {
     this.stats = new Map();
     // @ts-ignore: to type IObservableArray
     this.chats = [];
+    // @ts-ignore: to type IObservableArray
+    this.subtitles = [];
     this.myLastChat = null;
     this.myLastReaction = null;
     this.pinnedId = null;
@@ -81,6 +90,10 @@ class RoomStore {
   addRemoteChat(chat: RoomChat) {
     chat.isMine = false;
     this.chats.push(chat);
+  }
+
+  addSubtitle(subtitle: RoomSubtitle) {
+    this.subtitles.push(subtitle);
   }
 
   addReaction(from: string, reaction: string) {
@@ -131,6 +144,7 @@ decorate(RoomStore, {
   streams: observable.shallow,
   stats: observable.shallow,
   chats: observable.shallow,
+  subtitles: observable.shallow,
   myLastChat: observable.ref,
   myLastReaction: observable.ref,
   pinnedId: observable,

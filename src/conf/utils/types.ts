@@ -27,7 +27,9 @@ export type RoomData =
   | RoomDataStat
   | RoomDataChat
   | RoomDataReaction
-  | RoomDataCast;
+  | RoomDataCast
+  | RoomDataSubtitle;
+
 interface RoomDataStat {
   type: "stat";
   payload: RoomStat;
@@ -36,6 +38,12 @@ interface RoomDataChat {
   type: "chat";
   payload: RoomChat;
 }
+
+interface RoomDataSubtitle {
+  type: "subtitle";
+  payload: RoomChat;
+}
+
 interface RoomDataReaction {
   type: "reaction";
   payload: RoomReaction;
@@ -59,6 +67,11 @@ export interface RoomChat {
   from: string;
   time: number;
   isMine: boolean;
+}
+
+export interface RoomSubtitle {
+  from: string;
+  text: string;
 }
 
 export interface RoomReaction {

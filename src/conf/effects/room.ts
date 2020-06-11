@@ -7,6 +7,7 @@ import {
   RoomChat,
   RoomReaction,
   RoomCast,
+  RoomSubtitle,
 } from "../utils/types";
 import RootStore from "../stores";
 
@@ -156,6 +157,11 @@ export const joinRoom = (store: RootStore) => {
         // notify only when chat is closed
         ui.isChatOpen || notification.showChat(chat.from, chat.text);
         room.addRemoteChat(chat);
+        break;
+      }
+      case "subtitle": {
+        const data = payload as RoomSubtitle;
+        room.addSubtitle(data);
         break;
       }
       case "reaction": {
