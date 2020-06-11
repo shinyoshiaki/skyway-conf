@@ -55,7 +55,7 @@ const RecognitionLayout: FunctionComponent<Props> = ({
         <div style={{ position: "relative", width: "100%", height: "100%" }}>
           <button
             onClick={onClickToggleAudioMuted}
-            title={isAudioTrackMuted ? "Unmute audio" : "Mute audio"}
+            title={isAudioTrackMuted ? "Start" : "Stop"}
             css={buttonStyle}
           >
             <i className="material-icons" css={{ fontsize: "xxx-large" }}>

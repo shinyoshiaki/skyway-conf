@@ -16,7 +16,10 @@ const Recognition: FunctionComponent<{}> = () => {
   }, [store]);
 
   const onClickDownload = useCallback(() => {
-    const content = JSON.stringify([...store.room.subtitles]);
+    const content = [...store.room.subtitles].reduce((acc, cur) => {
+      acc += `${cur.from}:${cur.text}\n`;
+      return acc;
+    }, "");
     const blob = new Blob([content], { type: "text/plain" });
     const url = window.URL.createObjectURL(blob);
     const anchor = document.createElement("a");
