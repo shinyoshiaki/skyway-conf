@@ -14,7 +14,7 @@ interface Props {
   onSubmit: (init: RoomInit) => void;
 }
 const RoomCreate: FunctionComponent<Props> = (props) => {
-  const [roomId, setRoomId] = useState("");
+  const [roomId, setRoomId] = useState(Math.random().toString().slice(2, 7));
   const [roomType, setRoomType] = useState("sfu");
   const [isRoomIdValid, setRoomIdValid] = useState(true);
 
