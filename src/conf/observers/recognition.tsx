@@ -16,6 +16,21 @@ const Recognition: FunctionComponent<{}> = () => {
   const recognitionRef = useRef<RecognitionEffect>();
   const [progress, setProgress] = useState("");
 
+  useEffect(() => {
+    const recognition = (recognitionRef.current = new RecognitionEffect());
+    recognition.onFinal = (str) => {
+      store.room.addLocalSubtitle({
+        from: store.client.displayName,
+        text: str,
+      });
+    };
+    recognition.onError = () => {
+      console.log("error");
+      store.subtitle.toggleMuted();
+    };
+    recognition.onProgress = setProgress;
+  }, [store]);
+
   const onClickToggleAudioMuted = useCallback(() => {
     const recognition = recognitionRef.current!;
     recognition.toggle();
@@ -35,21 +50,6 @@ const Recognition: FunctionComponent<{}> = () => {
     anchor.click();
   }, [store]);
 
-  useEffect(() => {
-    const recognition = (recognitionRef.current = new RecognitionEffect());
-    recognition.onFinal = (str) => {
-      store.room.addLocalSubtitle({
-        from: store.client.displayName,
-        text: str,
-      });
-    };
-    recognition.onError = () => {
-      console.log("error");
-      store.subtitle.toggleMuted();
-    };
-    recognition.onProgress = setProgress;
-  }, [store]);
-
   const { media, client, ui, subtitle } = store;
   return (
     <Observer>
@@ -62,7 +62,6 @@ const Recognition: FunctionComponent<{}> = () => {
           <RecognitionLayout
             stream={media.stream}
             displayName={client.displayName}
-            browser={client.browser}
             isAudioTrackMuted={subtitle.isAudioTrackMuted}
             onClickToggleAudioMuted={onClickToggleAudioMuted}
             onClickDownload={onClickDownload}

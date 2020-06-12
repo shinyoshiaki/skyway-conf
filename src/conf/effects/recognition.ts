@@ -15,6 +15,7 @@ export class RecognitionEffect {
       for (let i = event.resultIndex; i < event.results.length; ++i) {
         if (event.results[i].isFinal) {
           if (this.onFinal) this.onFinal(event.results[i][0].transcript);
+          this.recognition.start();
         } else {
           // eslint-disable-next-line no-lonely-if
           if (this.onProgress) this.onProgress(event.results[i][0].transcript);

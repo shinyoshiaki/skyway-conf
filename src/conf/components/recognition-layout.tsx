@@ -3,14 +3,12 @@ import { useState } from "react";
 import { FunctionComponent } from "react";
 import { css } from "@emotion/core";
 import { globalColors } from "../../shared/global-style";
-import { ClientBrowser } from "../utils/types";
 import { IconButton } from "./icon";
 import VADetector from "./va-detector";
 
 interface Props {
   stream: MediaStream;
   displayName: string;
-  browser: ClientBrowser;
   isAudioTrackMuted: boolean;
   onClickToggleAudioMuted: () => void;
   onClickDownload: () => void;
@@ -66,7 +64,7 @@ const RecognitionLayout: FunctionComponent<Props> = ({
           </button>
         </div>
         <div css={controllerStyle}>
-          <VADetector stream={stream} />
+          {!isAudioTrackMuted && <VADetector stream={stream} />}
           <div style={{ color: "white" }}>{progress}</div>
         </div>
       </div>
